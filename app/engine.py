@@ -40,21 +40,58 @@ def _build_route_maps(plan: PlanIn) -> tuple[dict[str, str], dict[str, str]]:
     return old, new
 
 
+def compute_rate_limits(
+    new_capacity: float,
+    guarantees: list[tuple[str, int]],
+    original_traffic: dict[str, float],
+) -> dict[str, float]:
+    """按限速单算法计算各被限速入口的限速值。
+
+    算法：先留足所有保底（调用方需保证保底合计 <= new_capacity），
+    再按 guarantees 的优先级顺序，让各入口尽量保住原速率：
+    每个入口依次从剩余额度中补齐到原速率，额度用完即止。
+
+    :param new_capacity: 链路新容量（限速预算）
+    :param guarantees: [(入口节点, 保底速率)]，列表顺序即优先级（高 -> 低）
+    :param original_traffic: 各入口原速率
+    :return: {入口节点: 限速值}，仅包含 guarantees 中列出的入口
+    """
+    rates: dict[str, float] = {node: float(min_rate) for node, min_rate in guarantees}
+    remaining = float(new_capacity) - sum(min_rate for _, min_rate in guarantees)
+    for node, _min_rate in guarantees:
+        want = original_traffic[node] - rates[node]
+        if want <= 0:
+            continue
+        give = min(want, remaining)
+        rates[node] += give
+        remaining -= give
+    return rates
+
+
 def evaluate(
     plan: PlanIn,
     confirmed: set[str],
     uncertain: set[str],
+    capacity_override: dict[tuple[str, str], float] | None = None,
+    traffic_override: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     """穷举所有不确定设备的新旧组合并核算。
 
     :param plan: 录入的换路方案（拓扑、容量、入口流量、新旧路由）
     :param confirmed: 已登记成功回执的设备，强制新路由
     :param uncertain: 本批设备 ∪ 已放行未确认设备，新旧均可能
+    :param capacity_override: 链路容量覆盖（如已登记限速单调低后的新容量）
+    :param traffic_override: 入口流量覆盖（如已登记限速单的限速后流量）
     :return: 含 scenarios / reachable / fault_summary / approved 的结果字典
     """
     capacity_map = _build_capacity_map(plan)
+    if capacity_override:
+        capacity_map.update(capacity_override)
     old_route, new_route = _build_route_maps(plan)
     router_set = set(plan.routers)
+    traffic_of = {ingress.node: ingress.traffic for ingress in plan.ingresses}
+    if traffic_override:
+        traffic_of.update(traffic_override)
 
     uncertain_sorted = sorted(uncertain)
     n = len(uncertain_sorted)
@@ -113,7 +150,7 @@ def evaluate(
                     break
                 path_index[hop] = len(path)
                 path.append(hop)
-                load[edge] = load.get(edge, 0.0) + ingress.traffic
+                load[edge] = load.get(edge, 0.0) + traffic_of[ingress.node]
                 current = hop
 
             if open_location is not None:

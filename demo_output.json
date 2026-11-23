@@ -14,13 +14,14 @@
         "confirmed_devices": [],
         "pending_devices": [],
         "application_count": 0,
-        "updated_at": "2026-11-22T17:51:44.762439+00:00"
+        "updated_at": "2026-11-23T05:40:21.743586+00:00",
+        "active_rate_limit_order": null
       }
     },
     {
       "step": "apply_r3",
       "response": {
-        "application_id": "app-71108a660c0e",
+        "application_id": "app-5af65cbb3c6e",
         "prefix": "10.11.0.0/16",
         "decision": "approved",
         "batch": [
@@ -39,13 +40,14 @@
         "failing_scenarios": [],
         "failing_scenarios_truncated": false,
         "message": "全部 2 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理",
-        "decided_at": "2026-11-22T17:51:44.767653+00:00"
+        "decided_at": "2026-11-23T05:40:21.749341+00:00",
+        "rate_limit_order_id": null
       }
     },
     {
       "step": "apply_r4_before_receipt",
       "response": {
-        "application_id": "app-d4e9a608a4f6",
+        "application_id": "app-d30fcf57ccc7",
         "prefix": "10.11.0.0/16",
         "decision": "rejected",
         "batch": [
@@ -83,7 +85,8 @@
         ],
         "failing_scenarios_truncated": false,
         "message": "在 1/4 种新旧组合下存在断路/环路/超载，整批退回，原有放行记录不变",
-        "decided_at": "2026-11-22T17:51:44.769091+00:00"
+        "decided_at": "2026-11-23T05:40:21.750876+00:00",
+        "rate_limit_order_id": null
       }
     },
     {
@@ -102,7 +105,8 @@
           "r3"
         ],
         "application_count": 2,
-        "updated_at": "2026-11-22T17:51:44.769091+00:00",
+        "updated_at": "2026-11-23T05:40:21.750876+00:00",
+        "active_rate_limit_order": null,
         "plan": {
           "prefix": "10.11.0.0/16",
           "exit_node": "exit",
@@ -185,7 +189,7 @@
         },
         "applications": [
           {
-            "application_id": "app-71108a660c0e",
+            "application_id": "app-5af65cbb3c6e",
             "prefix": "10.11.0.0/16",
             "decision": "approved",
             "batch": [
@@ -204,10 +208,11 @@
             "failing_scenarios": [],
             "failing_scenarios_truncated": false,
             "message": "全部 2 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理",
-            "decided_at": "2026-11-22T17:51:44.767653+00:00"
+            "decided_at": "2026-11-23T05:40:21.749341+00:00",
+            "rate_limit_order_id": null
           },
           {
-            "application_id": "app-d4e9a608a4f6",
+            "application_id": "app-d30fcf57ccc7",
             "prefix": "10.11.0.0/16",
             "decision": "rejected",
             "batch": [
@@ -245,10 +250,12 @@
             ],
             "failing_scenarios_truncated": false,
             "message": "在 1/4 种新旧组合下存在断路/环路/超载，整批退回，原有放行记录不变",
-            "decided_at": "2026-11-22T17:51:44.769091+00:00"
+            "decided_at": "2026-11-23T05:40:21.750876+00:00",
+            "rate_limit_order_id": null
           }
         ],
-        "created_at": "2026-11-22T17:51:44.762405+00:00"
+        "created_at": "2026-11-23T05:40:21.743550+00:00",
+        "rate_limit_orders": []
       }
     },
     {
@@ -256,19 +263,19 @@
       "response": {
         "prefix": "10.11.0.0/16",
         "device": "r3",
-        "receipt_id": "rcpt-f21de9d75def",
+        "receipt_id": "rcpt-85ded206d2e8",
         "status": "registered",
         "confirmed_devices": [
           "r3"
         ],
         "pending_devices": [],
-        "recorded_at": "2026-11-22T17:51:44.774560+00:00"
+        "recorded_at": "2026-11-23T05:40:21.757813+00:00"
       }
     },
     {
       "step": "apply_r4_after_receipt",
       "response": {
-        "application_id": "app-19af899762a8",
+        "application_id": "app-6ff91a10d3ec",
         "prefix": "10.11.0.0/16",
         "decision": "approved",
         "batch": [
@@ -287,7 +294,8 @@
         "failing_scenarios": [],
         "failing_scenarios_truncated": false,
         "message": "全部 2 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理",
-        "decided_at": "2026-11-22T17:51:44.775778+00:00"
+        "decided_at": "2026-11-23T05:40:21.759068+00:00",
+        "rate_limit_order_id": null
       }
     }
   ],
@@ -295,7 +303,7 @@
     {
       "step": "apply_r1",
       "response": {
-        "application_id": "app-eb04b1b1231f",
+        "application_id": "app-f1e165ffb110",
         "prefix": "10.12.0.0/16",
         "decision": "rejected",
         "batch": [
@@ -347,7 +355,332 @@
         ],
         "failing_scenarios_truncated": false,
         "message": "在 2/2 种新旧组合下存在断路/环路/超载，整批退回，原有放行记录不变",
-        "decided_at": "2026-11-22T17:51:44.778144+00:00"
+        "decided_at": "2026-11-23T05:40:21.761656+00:00",
+        "rate_limit_order_id": null
+      }
+    }
+  ],
+  "plan_c": [
+    {
+      "step": "put_plan",
+      "response": {
+        "prefix": "10.13.0.0/16",
+        "exit_node": "exit",
+        "routers": [
+          "r1",
+          "r2",
+          "r3",
+          "r4"
+        ],
+        "confirmed_devices": [],
+        "pending_devices": [],
+        "application_count": 0,
+        "updated_at": "2026-11-23T05:40:21.762904+00:00",
+        "active_rate_limit_order": null
+      }
+    },
+    {
+      "step": "create_rate_limit",
+      "response": {
+        "order_id": "rl-f47c590c1128",
+        "prefix": "10.13.0.0/16",
+        "link": {
+          "src": "r3",
+          "dst": "exit"
+        },
+        "new_capacity": 70,
+        "guarantees": [
+          {
+            "node": "r1",
+            "min_rate": 30
+          },
+          {
+            "node": "r2",
+            "min_rate": 20
+          }
+        ],
+        "rate_limits": {
+          "r1": 50.0,
+          "r2": 20.0
+        },
+        "verification_traffic": {
+          "r1": 50.0,
+          "r2": 20.0,
+          "r4": 80.0
+        },
+        "plan_generation": 1,
+        "status": "trial_passed",
+        "decision": "trial_passed",
+        "scenarios_evaluated": 1,
+        "failing_scenarios_count": 0,
+        "fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "faults": [],
+        "failing_scenarios": [],
+        "failing_scenarios_truncated": false,
+        "message": "试算通过：1 种新旧组合在新容量 70 与限速后流量下均可到达出口且不超容；装好限速后请凭单号登记，登记前换路放行仍按原容量核算",
+        "note": "机房检修，临时调低 r3->exit",
+        "created_at": "2026-11-23T05:40:21.769323+00:00",
+        "registered_at": null,
+        "registration_attempts": []
+      }
+    },
+    {
+      "step": "other_prefix_application_during_trial",
+      "response": {
+        "application_id": "app-81ce3efc745c",
+        "prefix": "10.11.0.0/16",
+        "decision": "approved",
+        "batch": [
+          "r1"
+        ],
+        "uncertain_devices": [
+          "r1",
+          "r4"
+        ],
+        "scenarios_evaluated": 4,
+        "failing_scenarios_count": 0,
+        "fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "failing_scenarios": [],
+        "failing_scenarios_truncated": false,
+        "message": "全部 4 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理",
+        "decided_at": "2026-11-23T05:40:21.770659+00:00",
+        "rate_limit_order_id": null
+      }
+    },
+    {
+      "step": "apply_r4_before_register",
+      "response": {
+        "application_id": "app-1947b1376871",
+        "prefix": "10.13.0.0/16",
+        "decision": "approved",
+        "batch": [
+          "r4"
+        ],
+        "uncertain_devices": [
+          "r4"
+        ],
+        "scenarios_evaluated": 2,
+        "failing_scenarios_count": 0,
+        "fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "failing_scenarios": [],
+        "failing_scenarios_truncated": false,
+        "message": "全部 2 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理",
+        "decided_at": "2026-11-23T05:40:21.771813+00:00",
+        "rate_limit_order_id": null
+      }
+    },
+    {
+      "step": "register_rejected_recheck_failed",
+      "response": {
+        "http_status": 409,
+        "detail": {
+          "reason": "recheck_failed",
+          "message": "按最新放行/回执状态复核未通过：1/2 种新旧组合存在断路/环路/超载；限速单维持未登记状态，原记录与核算参数保留",
+          "order_id": "rl-f47c590c1128",
+          "scenarios_evaluated": 2,
+          "failing_scenarios_count": 1,
+          "fault_summary": {
+            "断路": 0,
+            "环路": 0,
+            "超载": 1
+          },
+          "failing_scenarios": [
+            {
+              "index": 1,
+              "device_states": {
+                "r4": "new"
+              },
+              "reachable": false,
+              "faults": [
+                {
+                  "type": "超载",
+                  "location": "r3 -> exit",
+                  "detail": "链路 r3 -> exit 合计流量 150 超过容量 70",
+                  "load": 150.0,
+                  "capacity": 70.0
+                }
+              ]
+            }
+          ],
+          "failing_scenarios_truncated": false
+        }
+      }
+    },
+    {
+      "step": "orders_after_reject",
+      "response": [
+        {
+          "order_id": "rl-f47c590c1128",
+          "prefix": "10.13.0.0/16",
+          "link": {
+            "src": "r3",
+            "dst": "exit"
+          },
+          "new_capacity": 70,
+          "guarantees": [
+            {
+              "node": "r1",
+              "min_rate": 30
+            },
+            {
+              "node": "r2",
+              "min_rate": 20
+            }
+          ],
+          "rate_limits": {
+            "r1": 50.0,
+            "r2": 20.0
+          },
+          "verification_traffic": {
+            "r1": 50.0,
+            "r2": 20.0,
+            "r4": 80.0
+          },
+          "plan_generation": 1,
+          "status": "trial_passed",
+          "decision": "trial_passed",
+          "scenarios_evaluated": 1,
+          "failing_scenarios_count": 0,
+          "fault_summary": {
+            "断路": 0,
+            "环路": 0,
+            "超载": 0
+          },
+          "faults": [],
+          "failing_scenarios": [],
+          "failing_scenarios_truncated": false,
+          "message": "试算通过：1 种新旧组合在新容量 70 与限速后流量下均可到达出口且不超容；装好限速后请凭单号登记，登记前换路放行仍按原容量核算",
+          "note": "机房检修，临时调低 r3->exit",
+          "created_at": "2026-11-23T05:40:21.769323+00:00",
+          "registered_at": null,
+          "registration_attempts": [
+            {
+              "attempted_at": "2026-11-23T05:40:21.777182+00:00",
+              "result": "rejected",
+              "reason": "recheck_failed",
+              "detail": "按最新放行/回执状态复核未通过：1/2 种新旧组合存在断路/环路/超载；限速单维持未登记状态，原记录与核算参数保留"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step": "create_rate_limit_fixed",
+      "response": {
+        "order_id": "rl-e868100f5980",
+        "prefix": "10.13.0.0/16",
+        "link": {
+          "src": "r3",
+          "dst": "exit"
+        },
+        "new_capacity": 70,
+        "guarantees": [
+          {
+            "node": "r1",
+            "min_rate": 30
+          },
+          {
+            "node": "r2",
+            "min_rate": 20
+          },
+          {
+            "node": "r4",
+            "min_rate": 10
+          }
+        ],
+        "rate_limits": {
+          "r1": 40.0,
+          "r2": 20.0,
+          "r4": 10.0
+        },
+        "verification_traffic": {
+          "r1": 40.0,
+          "r2": 20.0,
+          "r4": 10.0
+        },
+        "plan_generation": 1,
+        "status": "trial_passed",
+        "decision": "trial_passed",
+        "scenarios_evaluated": 2,
+        "failing_scenarios_count": 0,
+        "fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "faults": [],
+        "failing_scenarios": [],
+        "failing_scenarios_truncated": false,
+        "message": "试算通过：2 种新旧组合在新容量 70 与限速后流量下均可到达出口且不超容；装好限速后请凭单号登记，登记前换路放行仍按原容量核算",
+        "note": null,
+        "created_at": "2026-11-23T05:40:21.780236+00:00",
+        "registered_at": null,
+        "registration_attempts": []
+      }
+    },
+    {
+      "step": "register_success",
+      "response": {
+        "order_id": "rl-e868100f5980",
+        "prefix": "10.13.0.0/16",
+        "status": "registered",
+        "link": {
+          "src": "r3",
+          "dst": "exit"
+        },
+        "new_capacity": 70,
+        "rate_limits": {
+          "r1": 40.0,
+          "r2": 20.0,
+          "r4": 10.0
+        },
+        "recheck_scenarios_evaluated": 2,
+        "recheck_fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "registered_at": "2026-11-23T05:40:21.781495+00:00",
+        "message": "限速单 rl-e868100f5980 已登记生效：链路 r3 -> exit 按新容量 70 Mbps 与限速后流量核算后续换路放行"
+      }
+    },
+    {
+      "step": "apply_r1_after_register",
+      "response": {
+        "application_id": "app-78a23c155644",
+        "prefix": "10.13.0.0/16",
+        "decision": "approved",
+        "batch": [
+          "r1"
+        ],
+        "uncertain_devices": [
+          "r1",
+          "r4"
+        ],
+        "scenarios_evaluated": 4,
+        "failing_scenarios_count": 0,
+        "fault_summary": {
+          "断路": 0,
+          "环路": 0,
+          "超载": 0
+        },
+        "failing_scenarios": [],
+        "failing_scenarios_truncated": false,
+        "message": "全部 4 种新旧组合核算通过，本批 1 台设备放行；登记成功回执前按不确定设备处理；本次按已登记限速单 rl-e868100f5980 的新容量与限速核算",
+        "decided_at": "2026-11-23T05:40:21.782750+00:00",
+        "rate_limit_order_id": "rl-e868100f5980"
       }
     }
   ]

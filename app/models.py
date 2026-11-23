@@ -7,6 +7,8 @@ from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
 MAX_ROUTERS = 12
+# 限速单中容量与速率的上限（整数 Mbps）
+MAX_MBPS = 1_000_000
 
 
 class LinkIn(BaseModel):
@@ -142,6 +144,8 @@ class ApplicationOut(BaseModel):
     failing_scenarios_truncated: bool
     message: str
     decided_at: str
+    # 裁决时生效的限速单单号；None 表示按方案原始容量核算
+    rate_limit_order_id: str | None = None
 
 
 class ReceiptOut(BaseModel):
@@ -164,9 +168,111 @@ class PlanSummary(BaseModel):
     pending_devices: list[str]
     application_count: int
     updated_at: str
+    # 当前生效的限速单单号；None 表示按方案原始容量核算
+    active_rate_limit_order: str | None = None
 
 
 class PlanDetail(PlanSummary):
     plan: PlanIn
     applications: list[ApplicationOut]
     created_at: str
+    rate_limit_orders: list["RateLimitOrderOut"] = []
+
+
+# ---------- 入口限速单 ----------
+
+
+class RateLimitLinkIn(BaseModel):
+    """被调低容量的有向链路。"""
+
+    src: str = Field(..., min_length=1, description="链路起点")
+    dst: str = Field(..., min_length=1, description="链路终点")
+
+
+class RateLimitGuaranteeIn(BaseModel):
+    """单个入口的保底速率；在 guarantees 列表中的位置即优先级（越靠前越高）。"""
+
+    node: str = Field(..., min_length=1, description="入口节点")
+    min_rate: int = Field(..., ge=0, le=MAX_MBPS, description="保底速率（整数 Mbps，<=100 万）")
+
+
+class RateLimitOrderIn(BaseModel):
+    """入口限速单（试算）：调低一条有向链路的容量，并按优先级给出各入口保底速率。"""
+
+    link: RateLimitLinkIn = Field(..., description="被调低容量的有向链路")
+    new_capacity: int = Field(..., ge=0, le=MAX_MBPS, description="链路新容量（整数 Mbps，<=100 万）")
+    guarantees: list[RateLimitGuaranteeIn] = Field(
+        default_factory=list,
+        description="按优先级从高到低排列的各入口保底速率；未列出的入口不被本限速单限速",
+    )
+    note: str | None = Field(None, description="备注")
+
+    @model_validator(mode="after")
+    def _no_duplicate_guarantee_nodes(self) -> "RateLimitOrderIn":
+        nodes = [g.node for g in self.guarantees]
+        if len(set(nodes)) != len(nodes):
+            raise ValueError("guarantees 中存在重复入口节点")
+        return self
+
+
+class RegistrationAttempt(BaseModel):
+    """一次登记尝试的留痕。"""
+
+    attempted_at: str
+    result: Literal["registered", "rejected"]
+    # plan_overwritten / recheck_failed / already_registered / trial_failed / superseded
+    reason: str | None = None
+    detail: str
+
+
+class RateLimitOrderOut(BaseModel):
+    """一张入口限速单及其试算/登记状态。"""
+
+    order_id: str
+    prefix: str
+    link: RateLimitLinkIn
+    new_capacity: int
+    guarantees: list[RateLimitGuaranteeIn]
+    # 核算参数：先留足保底、再按优先级尽量保住原速率后得到的各入口限速值
+    rate_limits: dict[str, float]
+    # 核算时实际采用的各入口流量（被限速入口取 min(限速值, 原速率)，未限速入口取原速率）
+    verification_traffic: dict[str, float]
+    # 试算所基于的方案版本；登记时若与当前版本不一致 => 方案被覆盖，拒绝登记
+    plan_generation: int
+    # trial_passed / trial_failed / registered / superseded
+    status: Literal["trial_passed", "trial_failed", "registered", "superseded"]
+    decision: Literal["trial_passed", "trial_failed"]
+    scenarios_evaluated: int
+    failing_scenarios_count: int
+    fault_summary: dict[str, int]
+    # 试算级故障（如保底合计超新容量），与场景级故障分开返回
+    faults: list[Fault]
+    failing_scenarios: list[ScenarioOut]
+    failing_scenarios_truncated: bool
+    message: str
+    note: str | None = None
+    created_at: str
+    registered_at: str | None = None
+    registration_attempts: list[RegistrationAttempt] = []
+
+
+class RateLimitRegisterIn(BaseModel):
+    """凭单号登记限速单：值班员装好限速后、实际降容前调用。"""
+
+    order_id: str = Field(..., min_length=1, description="限速单单号")
+
+
+class RateLimitRegisterOut(BaseModel):
+    """限速单登记成功结果；登记后换路放行按新容量和限速核算。"""
+
+    order_id: str
+    prefix: str
+    status: Literal["registered"]
+    link: RateLimitLinkIn
+    new_capacity: int
+    rate_limits: dict[str, float]
+    # 登记时按最新放行/回执状态复核的结果
+    recheck_scenarios_evaluated: int
+    recheck_fault_summary: dict[str, int]
+    registered_at: str
+    message: str
